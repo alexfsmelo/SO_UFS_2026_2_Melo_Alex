@@ -1,0 +1,131 @@
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ollama --version
+ollama version is 0.34.0
+
+
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ time ollama pull deepseek-r1:7b
+pulling manifest
+pulling 96c415656d37: 100% ▕██████████████████████████████████████████████████████████▏ 4.7 GB
+verifying sha256 digest
+writing manifest
+success
+
+real    4m58.370s
+user    0m1.031s
+sys     0m1.228s
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ollama list
+NAME              ID              SIZE      MODIFIED
+deepseek-r1:7b    755ced02ce7b    4.7 GB    About a minute ago
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ df -h ~/.ollama/
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdd       1007G  8.1G  948G   1% /
+
+
+
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ git clone https://github.com/tonykipkemboi/ollama_pdf_rag
+Cloning into 'ollama_pdf_rag'...
+remote: Enumerating objects: 701, done.
+remote: Counting objects: 100% (183/183), done.
+remote: Compressing objects: 100% (93/93), done.
+remote: Total 701 (delta 97), reused 99 (delta 77), pack-reused 518 (from 1)
+Receiving objects: 100% (701/701), 13.87 MiB | 2.70 MiB/s, done.
+Resolving deltas: 100% (191/191), done.
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ cd ollama_pdf_rag
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag$ git log --oneline -3
+f17f9c9 (HEAD -> main, tag: v3.0.0, origin/main, origin/HEAD) chore: Update changelog for v3.0.0 release
+f950d98 docs: Comprehensive documentation update
+4a94ad0 feat(web-ui): Pre-select PDFs with checkboxes + question classification
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag$
+
+
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag$ git describe --tags
+v3.0.0
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag$
+
+
+alexf@ALEX-NOTEBOOK:~$ cd SO_UFS_2026_2_Melo_Alex/
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ls
+README.md  VIDEO.md  apresentacao  ollama_pdf_rag  parte-a  parte-b  parte-c  relatorio
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ss -tlnp | grep 85
+LISTEN 0      2048                *:8502             *:*    users:(("streamlit",pid=2786,fd=13))
+LISTEN 0      2048                *:8501             *:*    users:(("streamlit",pid=2771,fd=13))
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ps aux | grep -E "streamlit|ollama|python" | grep -v grep
+root       144  0.0  0.3  44076 26340 ?        Ss   10:12   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root       255  0.0  0.3 123440 29076 ?        Ssl  10:12   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+ollama    1169  6.6  0.3 3002664 31228 ?       Ssl  10:34   2:46 /usr/local/bin/ollama serve
+alexf     2771  1.4  0.7 441776 62932 pts/0    Sl+  11:15   0:00 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/python3 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/streamlit run run.py
+alexf     2786  1.5  0.7 368028 62852 pts/0    Sl+  11:15   0:00 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/python3 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/streamlit run src/app/main.py
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ pstree -p $$ | head -20
+pstree -p $(pgrep -f streamlit | head -1)
+bash(2808)-+-head(2897)
+           `-pstree(2896)
+streamlit(2771)─┬─streamlit(2786)─┬─gio(2794)
+                │                 ├─{streamlit}(2787)
+                │                 ├─{streamlit}(2788)
+                │                 ├─{streamlit}(2789)
+                │                 ├─{streamlit}(2791)
+                │                 └─{streamlit}(2792)
+                ├─{streamlit}(2772)
+                ├─{streamlit}(2773)
+                ├─{streamlit}(2775)
+                ├─{streamlit}(2776)
+                ├─{streamlit}(2784)
+                └─{streamlit}(2785)
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ # ver logs do Ollama em background
+journalctl --user -u ollama 2>/dev/null || ps aux | grep ollama
+-- No entries --
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$ ss -tlnp | grep 85
+ps aux | grep -E "streamlit|ollama|python" | grep -v grep
+pstree -p $(pgrep -f streamlit | head -1)
+LISTEN 0      2048                *:8502             *:*    users:(("streamlit",pid=2786,fd=13))
+LISTEN 0      2048                *:8501             *:*    users:(("streamlit",pid=2771,fd=13))
+root       144  0.0  0.3  44076 26340 ?        Ss   10:12   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root       255  0.0  0.3 123440 29076 ?        Ssl  10:12   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+ollama    1169  6.4  0.3 3002664 31228 ?       Ssl  10:34   2:46 /usr/local/bin/ollama serve
+alexf     2771  0.8  0.7 441776 62932 pts/0    Sl+  11:15   0:00 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/python3 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/streamlit run run.py
+alexf     2786  0.8  0.7 368028 62856 pts/0    Sl+  11:15   0:00 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/python3 /home/alexf/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag/.venv/bin/streamlit run src/app/main.py
+streamlit(2771)─┬─streamlit(2786)─┬─gio(2794)
+                │                 ├─{streamlit}(2787)
+                │                 ├─{streamlit}(2788)
+                │                 ├─{streamlit}(2789)
+                │                 ├─{streamlit}(2791)
+                │                 └─{streamlit}(2792)
+                ├─{streamlit}(2772)
+                ├─{streamlit}(2773)
+                ├─{streamlit}(2775)
+                ├─{streamlit}(2776)
+                ├─{streamlit}(2784)
+                └─{streamlit}(2785)
+alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex$
+
+
+
+(.venv) alexf@ALEX-NOTEBOOK:~/SO_UFS_2026_2_Melo_Alex/ollama_pdf_rag$ streamlit run run.py
+2026-09-13 11:15:11.365 Uvicorn server started on :::8501
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://172.28.92.5:8501
+
+  Help agents write better Streamlit apps?
+  Install the official Streamlit skills by running streamlit skills in your terminal.
+
+  Detected WSL. Using poll-based file watching for better compatibility. To force watchdog, set server.fileWatcherType = "watchdog".
+gio: http://localhost:8501: Operation not supported
+2026-09-13 11:15:14.634 Uvicorn server started on :::8502
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8502
+  Network URL: http://172.28.92.5:8502
+
+  Help agents write better Streamlit apps?
+  Install the official Streamlit skills by running streamlit skills in your terminal.
+
+  Detected WSL. Using poll-based file watching for better compatibility. To force watchdog, set server.fileWatcherType = "watchdog".
+gio: http://localhost:8502: Operation not supported
+
+
+
+
+
