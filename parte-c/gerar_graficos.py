@@ -55,7 +55,7 @@ for bar, val in zip(bars, medias.values):
             f"{val:.1f}s", ha="center", va="bottom", fontsize=9, fontweight="bold")
 
 ax.set_ylabel("TTFT médio (segundos)", fontsize=11)
-ax.set_title("Latência de inferência (TTFT) por configuração\nDeepSeek-R1 em CPU — WSL2, 7.8 GB RAM",
+ax.set_title("Latência de inferência (TTFT) por configuração\nDeepSeek-R1 em CPU - WSL2, 7.8 GB RAM",
              fontsize=12, fontweight="bold")
 ax.set_ylim(0, max(medias.values) * 1.15)
 ax.spines["top"].set_visible(False)
@@ -77,7 +77,7 @@ for bar, val in zip(bars, rams.values):
     ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 20,
             f"{val/1024:.1f} GB", ha="center", va="bottom", fontsize=9, fontweight="bold")
 
-ax.set_ylabel("RAM usada — média (MB)", fontsize=11)
+ax.set_ylabel("RAM usada - media (MB)", fontsize=11)
 ax.set_title("Uso de RAM por configuração", fontsize=12, fontweight="bold")
 ax.set_ylim(0, max(rams.values) * 1.12)
 ax.axhline(7800, color="red", linestyle="--", linewidth=1, alpha=0.7, label="Limite 7.8 GB")
