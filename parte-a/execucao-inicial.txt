@@ -1,0 +1,120 @@
+# Registro de Execução Inicial — ATV1 SO (COMP0472 — 2026.2)
+# Aluno: Álex Felipe Santos Melo
+# Data: 13/09/2026 (WSL2 Ubuntu, notebook pessoal)
+
+=============================================================
+1. AMBIENTE
+=============================================================
+Sistema operacional host : Windows 11
+Ambiente de execução     : WSL2 (Ubuntu)
+RAM disponível no WSL2   : 7,8 GB
+CPU                      : somente CPU (sem GPU/CUDA)
+Python                   : 3.14
+Ollama                   : 0.34.0 → atualizado para 0.6.2 (via script oficial)
+
+=============================================================
+2. INSTALAÇÃO DO OLLAMA
+=============================================================
+Comando:
+  curl -fsSL https://ollama.com/install.sh | sh
+
+Ollama instalado em: /usr/local/bin/ollama
+Serviço iniciado automaticamente como daemon (usuário: ollama)
+
+=============================================================
+3. DOWNLOAD DOS MODELOS
+=============================================================
+Modelo 1 — deepseek-r1:7b
+  Comando  : ollama pull deepseek-r1:7b
+  ID       : 755ced02ce7b
+  Tamanho  : 4,7 GB (GGUF Q4_K_M)
+  Tempo    : ~15 min (conexão residencial)
+
+Modelo 2 — nomic-embed-text
+  Comando  : ollama pull nomic-embed-text
+  ID       : 0a109f422b47
+  Tamanho  : 274 MB
+  Tempo    : ~2 min
+
+Espaço total ocupado em disco:
+  /usr/share/ollama/.ollama/models/ → 4,7 GB
+
+=============================================================
+4. INSTALAÇÃO DA APLICAÇÃO ollama_pdf_rag
+=============================================================
+Repositório : https://github.com/tonykipkemboi/ollama_pdf_rag
+Commit      : f17f9c9 (tag v3.0.0)
+
+Comandos:
+  cd ~/SO_UFS_2026_2_Melo_Alex
+  git clone https://github.com/tonykipkemboi/ollama_pdf_rag
+  cd ollama_pdf_rag
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install streamlit langchain langchain-community langchain-chroma \
+    langchain-ollama chromadb pypdf pdfplumber \
+    "Pillow>=11" "pydantic>=2.5" "numpy>=2.0"
+
+Nota: requirements.txt original foi ignorado — incompatível com Python 3.14
+(numpy 1.26.4 sem wheel, pydantic-core e pi_heif exigem gcc/libheif ausentes).
+
+=============================================================
+5. INICIALIZAÇÃO DO STREAMLIT
+=============================================================
+Comando:
+  python run.py
+
+Tempo até "Uvicorn server started": ~3 segundos
+Porta: 8502 (run.py sobrescreve a 8501 padrão)
+
+Acesso via WSL2: http://172.28.92.5:8502
+(localhost:8502 não funciona no navegador do Windows — comportamento normal do WSL2)
+
+=============================================================
+6. PORTAS ABERTAS (ss -tlnp)
+=============================================================
+Ollama    : 127.0.0.1:11434   (API REST — somente loopback)
+Streamlit : 0.0.0.0:8502      (acessível pelo IP do WSL2)
+
+=============================================================
+7. PROCESSOS EM EXECUÇÃO (ps aux — momento de uso)
+=============================================================
+ollama    157   /usr/local/bin/ollama serve          (RAM: ~40 MB em idle; sobe para ~5-6 GB durante inferência)
+python3   XXX   streamlit run / uvicorn              (RAM: ~200-400 MB)
+python3   156   networkd-dispatcher                  (sistema)
+python3   302   unattended-upgrade-shutdown          (sistema)
+
+=============================================================
+8. ERROS ENCONTRADOS E SOLUÇÕES
+=============================================================
+E1: "address already in use" ao executar `ollama serve`
+    → Ollama já estava rodando como daemon. Solução: usar `ollama list` para confirmar; ignorar o erro.
+
+E2: ".venv/bin/activate: No such file or directory"
+    → venv não havia sido criado. Solução: `python3 -m venv .venv` antes de ativar.
+
+E3: Falha no pip com numpy 1.26.4, pydantic-core, pi_heif (Python 3.14)
+    → Sem wheels disponíveis; build requer gcc/libheif ausentes no WSL2 mínimo.
+    → Solução: instalar somente dependências essenciais com versões atuais.
+
+E4: ImportError — UnstructuredPDFLoader (pacote `unstructured` não instalado)
+    → Solução: substituir por PyPDFLoader em src/app/main.py.
+
+E5: "nomic-embed-text:latest does not support chat" (status 400)
+    → Dropdown selecionava o modelo de embedding como modelo de chat.
+    → Solução: filtrar modelos com "embed" no nome antes de popular o selectbox.
+
+E6: MultiQueryRetriever sem atributo get_relevant_documents
+    → API depreciada no LangChain 1.x.
+    → Solução: sed -i 's/\.get_relevant_documents(/.invoke(/g' src/app/main.py
+
+E7: "request (4193 tokens) exceeds context size (4096)" (status 400)
+    → Chunks do PDF somados ao prompt ultrapassam o limite padrão.
+    → Solução: ChatOllama(model=selected_model, num_ctx=8192)
+
+=============================================================
+9. TEMPO DE RESPOSTA OBSERVADO
+=============================================================
+Indexação do PDF (9 chunks, embeddings): ~15 segundos
+Query simples ao RAG (deepseek-r1:7b, CPU): 8-10 minutos
+(inferência 100% em CPU, sem GPU — tempo esperado para 7B parâmetros)
