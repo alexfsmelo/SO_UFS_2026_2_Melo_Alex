@@ -1,0 +1,74 @@
+systemd(1)-+-agetty(321)
+           |-chronyd-starter(144)---chronyd(234)---chronyd(245)
+           |-cron(146)
+           |-dbus-daemon(147)
+           |-init-systemd(Ub(2)-+-SessionLeader(391)---Relay(394)(392)---bash(394)---python3(846)---streamlit(847)-+-gio(855)
+           |                    |                                                                                  |-{streamlit}(84+
+           |                    |                                                                                  |-{streamlit}(84+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(86+
+           |                    |                                                                                  |-{streamlit}(86+
+           |                    |                                                                                  `-{streamlit}(86+
+           |                    |-SessionLeader(864)---Relay(866)(865)---bash(866)---pstree(948)
+           |                    |-init(9)---{init}(10)
+           |                    |-login(403)---bash(498)
+           |                    `-{init-systemd(Ub}(11)
+           |-networkd-dispat(156)
+           |-ollama(157)-+-{ollama}(212)
+           |             |-{ollama}(213)
+           |             |-{ollama}(214)
+           |             |-{ollama}(215)
+           |             |-{ollama}(216)
+           |             |-{ollama}(287)
+           |             |-{ollama}(289)
+           |             |-{ollama}(296)
+           |             `-{ollama}(338)
+           |-rsyslogd(206)-+-{rsyslogd}(264)
+           |               |-{rsyslogd}(265)
+           |               `-{rsyslogd}(267)
+           |-systemd(467)---(sd-pam)(469)
+           |-systemd-journal(52)
+           |-systemd-logind(165)
+           |-systemd-resolve(86)
+           |-systemd-udevd(94)
+           `-unattended-upgr(302)---{unattended-upgr}(354)
+systemd(1)-+-agetty(321)
+           |-chronyd-starter(144)---chronyd(234)---chronyd(245)
+           |-cron(146)
+           |-dbus-daemon(147)
+           |-init-systemd(Ub(2)-+-SessionLeader(391)---Relay(394)(392)---bash(394)---python3(846)---streamlit(847)-+-gio(855)
+           |                    |                                                                                  |-{streamlit}(84+
+           |                    |                                                                                  |-{streamlit}(84+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(85+
+           |                    |                                                                                  |-{streamlit}(86+
+           |                    |                                                                                  |-{streamlit}(86+
+           |                    |                                                                                  `-{streamlit}(86+
+           |                    |-SessionLeader(864)---Relay(866)(865)---bash(866)---pstree(983)
+           |                    |-init(9)---{init}(10)
+           |                    |-login(403)---bash(498)
+           |                    `-{init-systemd(Ub}(11)
+           |-networkd-dispat(156)
+           |-ollama(157)-+-{ollama}(212)
+           |             |-{ollama}(213)
+           |             |-{ollama}(214)
+           |             |-{ollama}(215)
+           |             |-{ollama}(216)
+           |             |-{ollama}(287)
+           |             |-{ollama}(289)
+           |             |-{ollama}(296)
+           |             `-{ollama}(338)
+           |-rsyslogd(206)-+-{rsyslogd}(264)
+           |               |-{rsyslogd}(265)
+           |               `-{rsyslogd}(267)
+           |-systemd(467)---(sd-pam)(469)
+           |-systemd-journal(52)
+           |-systemd-logind(165)
+           |-systemd-resolve(86)
+           |-systemd-udevd(94)
+           `-unattended-upgr(302)---{unattended-upgr}(354)
