@@ -8,6 +8,12 @@ Trilha C: RAG sobre PDF com Modelos de Linguagem Locais
 
 ---
 
+## Vídeo de Apresentação
+
+[https://youtu.be/tex8QwoLRIE](https://youtu.be/tex8QwoLRIE)
+
+---
+
 ## Requisitos
 
 - Windows 11 com WSL2 (Ubuntu 22.04)
